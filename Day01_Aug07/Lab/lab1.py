@@ -3,6 +3,26 @@ def binarify(num):
   if num<=0: return '0'
   digits = []
   return ''.join(digits)
+  
+def binarify(num): 
+  """convert positive integer to base 2"""
+  if num<=0: return '0'
+  else:
+      return num / 2
+
+
+  digits = []
+  return ''.join(digits)
+  
+
+def binarify(num):
+    digits = []
+    while num > 0:
+        a = int(float(n%2))
+        digits.append(a)
+        num = num - a / 2
+        return ''.join(digits)
+
 
 def int_to_base(num, base):
   """convert positive integer to a string in any base"""
