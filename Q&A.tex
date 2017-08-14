@@ -5,3 +5,29 @@ A= Yes! And even inside the local environment: globals(), locals() and dir()
 
 - Is there a debugging function/library in Python, similar to debug() in R?
 A= Not identical but with a super similar logic. The library is called "pdb" (run >> pip install pdb in the terminal first) and then import it in a script you want to test. A good tutorial of how to use it can be found here: https://pythonconquerstheuniverse.wordpress.com/2009/09/10/debugging-in-python/
+
+- Some useful functions to keep on your radars:
+	* map(): applies a function to all the items in an input_list
+	* filter(): creates a list of elements for which a function returns true
+	* enumerate(): allows us to loop over something and have an automatic counter
+	* reduce(): it applies a rolling computation to sequential pairs of values in a list.
+
+- How to schedule Python scripts? Use CRON!
+	1. Type in terminal: nano <name of cron script>.cron
+	2. Syntax:
+		* * * * * python <name of python script>.py
+		1st * : minutes [0-60]
+		2nd * : hours [0-23]
+		3rd *: day of the month [1-31]
+		4th *: month [1-12]
+		5th *: day of the week [MON-SUN]
+	3. SAVE IT [CTRL+X, Y, Enter]
+	4. Load the cron document into the "crontab": crontab <name of cron script>.cron
+	5. Check the document is there: crontab -l
+	6. Voilá!
+	
+
+
+		
+	
+		
