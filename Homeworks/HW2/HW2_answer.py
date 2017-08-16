@@ -1,39 +1,44 @@
 from bs4 import BeautifulSoup
 import urllib2
 import csv 
-
-#Get address, open url
-web_address='https://petitions.whitehouse.gov/petitions'
-web_page = urllib2.urlopen(web_address)
-
-# Parse it
-soup = BeautifulSoup(web_page.read())
-soup.prettify()	
-
-# Find all cases of a certain tag
-soup.find_all('a')
-
-list_faculty = soup.find_all('a',{'span class':"element-invisible" })
-
-my_a_tag=soup.find_all('a')[-17]
+import urlparse
 
 html = []
-for link in soup.findAll('a', href = True):#find all links and store them in a list called htlm
-    html.append(link['href'])
-
 urls = []#empty list where I will store the relevant link endings
-import re
-for i in range(0, len(html)):
-    urls.append(re.findall(r'/petition/[\'"]?([^\'" >]+)', html[i]))#find all links in html that follow the desired pattern
-
 pet_urls = [] #empty list that will largely include only the petitions
-for i in range(0, len(urls)):#remove repeated url endings
-    if urls[i] in pet_urls:
-        pass
-    else:
-        pet_urls.append(urls[i])
 
-import urlparse
+x = ["0", "1", "2"] #number of pages
+pages = [] #create urls per page
+for a in x:
+    pages.append(urlparse.urljoin('https://petitions.whitehouse.gov/', "?page=" + a))
+
+for y in pages:#do it for each page
+    #Get address, open url
+    web_page = urllib2.urlopen(y)
+
+    # Parse it
+    soup = BeautifulSoup(web_page.read())
+    soup.prettify()	
+
+    # Find all cases of a certain tag
+    soup.find_all('a')
+
+    list_faculty = soup.find_all('a',{'span class':"element-invisible" })
+
+    my_a_tag=soup.find_all('a')[-17]
+
+    for link in soup.findAll('a', href = True):#find all links and store them in a list called htlm
+        html.append(link['href'])
+
+    import re
+    for i in range(0, len(html)):
+        urls.append(re.findall(r'/petition/[\'"]?([^\'" >]+)', html[i]))#find all links in html that follow the desired pattern
+
+    for i in range(0, len(urls)):#remove repeated url endings
+        if urls[i] in pet_urls:
+            pass
+        else:
+            pet_urls.append(urls[i])
 
 baseurl = "https://petitions.whitehouse.gov/petition/"
 list_links = [] #create list of petition links by joining base url + url endings

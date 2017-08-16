@@ -39,9 +39,35 @@ embassies = [[38.917228,-77.0522365],
 	[38.916944, -77.048739] ]
 
 # TODO: write code to answer the following questions: 
-# which embassy is closest to the White House in meters? how far? 
-# what is its address? 
+# which embassy is closest to the White House in meters? how far? # what is its address? 
+
+embassies_address = [gmaps.reverse_geocode(embassies[0])[0]['formatted_address'], gmaps.reverse_geocode(embassies[1])[0]['formatted_address'], gmaps.reverse_geocode(embassies[2])[0]['formatted_address']]
+
+directions = []
+for i in range(0, 3):
+    directions.append(gmaps.directions(embassies_address[i], whitehouse)[0]['legs'][0]['distance'])
+print directions
+
+#The embassy that is closest to the White House is the second one, which is located in: 1601 Massachusetts Ave NW, Washington, DC 20036, USA
+#The distance is 2231 meters away.
+
 # if I wanted to hold a morning meeting there, which cafe would you suggest?
+
+#If I would just choose the first cafe in the list, then I would suggest a cafe located in: 4820 Massachusetts Ave NW, Washington, DC 20016, United States
+#The name of the place is: Starbucks
+
+local = gmaps.places('cafe near ' + embassies_address[1])
+
+print local['results'][0]['formatted_address']
+print local['results'][0]['name']
+
 # if I wanted to hold an evening meeting there, which bar would you suggest? 
+
+#If I would just choose the first pub in the list, then I would suggest a cafe located in: 808 7th St NW, Washington, DC 20001, United States
+#The name of the place is: Fado Irish Pub
+
+local2 = gmaps.places('pub near ' + embassies_address[1])
+
+print local2['results'][0]['formatted_address']
 
 
