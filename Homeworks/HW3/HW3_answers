@@ -1,0 +1,145 @@
+#Register an app: https://dev.twitter.com/
+
+#sudo pip install tweepy
+import tweepy
+import time
+
+#Check the documentation page
+#http://docs.tweepy.org/en/v3.2.0/
+#Get access to API
+auth = tweepy.OAuthHandler('99bJyQdvP6aHSAXtQbvXv3Ia7', 'gjen7dxOV8djaTQ6ig7Joe99coAPNbCXdzYe6AD9lWbcAnubUm')
+auth.set_access_token('930848858-XCglhrhAm7eY60n4avt72iE5pdcBc725wgWb3ELi', 'j8hF7bzn06zLR3ChudEmgR5InA3uEdOopvKtRdkTmZ2qt')    
+api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True, retry_count=3, retry_delay=60)
+
+#I create a user object of my target account that has 250 followers
+roca = api.get_user('JofreRocabert')
+
+#One degree of separation:
+####Among the followers of your target who is the most active?
+
+target_followers = []
+for page in tweepy.Cursor(api.followers_ids, screen_name="JofreRocabert").pages():#get followers id
+    target_followers.extend(page)
+    time.sleep(60)
+
+print len(target_followers)#250 followers
+
+status_followers = []
+for i in range(0, len(target_followers)):#get number of statuses for each of the followers
+    status_followers.append(api.get_user(target_followers[i]).statuses_count)
+
+print len(status_followers)    
+    
+max_status = max(status_followers)#get max number of statuses in the list of followers
+max_index = status_followers.index(max_status)#get its index so that I can look it up
+n = api.get_user(target_followers[max_index]).name
+n2 = api.get_user(target_followers[max_index]).screen_name
+
+print "The most active follower of this account is %s (%s) with %d total statuses." % (n, n2, max_status)
+#The most active follower of this account is Sergi CJ (SCristobalJane) with 105647 total statuses.
+
+
+####Among the followers of your target who is the most popular, i.e. has the greatest number of followers?
+
+followercount_followers = []#get the number of followers for each follower in the list
+for i in range(0, len(target_followers)):
+    followercount_followers.append(api.get_user(target_followers[i]).followers_count)
+
+print len(followercount_followers) 
+
+max_followers = max(followercount_followers)#repeated what I did above for statuses
+max_index2 = followercount_followers.index(max_followers)
+n3 = api.get_user(target_followers[max_index2]).name
+n4 = api.get_user(target_followers[max_index2]).screen_name
+
+print "The most popular follower of this account is %s with %d total followers." % (n3, max_followers)
+#The most popular follower of this account is BlackHalt with 345778 total followers.
+
+
+####Among the friends of your target, i.e. the users she is following, who are the most active layman, expert and celebrity?
+
+target_friends = []
+for page in tweepy.Cursor(api.friends_ids, screen_name="JofreRocabert").pages():#get friends ids
+    target_friends.extend(page)
+    time.sleep(60)
+
+print len(target_friends)# 850 friends
+
+followercount_friends = []
+for i in range(0, len(target_friends)-1):
+    followercount_friends.append(api.get_user(target_friends[i]).friends_count)
+
+print len(followercount_friends)
+
+status_friends = []#number of statusfor all friends
+for i in range(0, len(target_friends)):
+    status_friends.append(api.get_user(target_friends[i]).friends_count)
+
+statuses_celfriends = list(filter(lambda x: followercount_friends > 1000, status_friends))
+
+followers_friends = []
+statuses_layfriends = []
+statuses_exfriends = []
+statuses_celfriends = []
+
+for i in range(0, len(target_friends)):#number of followers of friends
+    followers_friends.append(api.get_user(target_friends[i]).followers_count)
+    if followers_friends[i] >= 1000:
+        statuses_celfriends.append(api.get_user(target_friends[i]).statuses_count)
+    elif followers_friends[i] >= 100 and followers_friends[i] < 1000:
+        statuses_exfriends.append(api.get_user(target_friends[i]).statuses_count)
+    else:
+        statuses_layfriends.append(api.get_user(target_friends[i]).statuses_count)
+
+print len(statuses_celfriends)
+
+print len(followers_friends)
+print len(status_friends)
+print len(category_friends)
+
+for i in range(0, len(category_friends)):
+    if category_friends[i] == 'layman':
+        maxfol_layfriends = max(status_friends)
+        maxfol_layindex = status_friends.index(maxfol_layfriends)
+    elif category_friends[i] == 'expert':
+        maxfol_expfriends = max(status_friends)
+        maxfol_expindex = status_friends.index(maxfol_expfriends)
+    elif category_friends[i] == 'celebrity':
+        maxfol_celfriends = max(status_friends)
+        maxfol_celindex = status_friends.index(maxfol_celfriends)
+
+n5 = api.get_user(target_friends[maxfol_index]).name
+s6 = api.get_user(target_friends[maxfol_index]).statuses_count
+print "The most popular friend of this account is %s with %d total statuses." % (n, s)
+
+####Among the friends of your target who is the most popular?
+
+
+maxfoll_friends = max(followercount_friends)
+max_index = followercount_friends.index(max_followers)
+n = api.get_user(target_friends[max_index]).name
+s = api.get_user(target_friends[max_index]).followers_count
+print "The most popular friend of this account is %s with %d total statuses." % (n, s)
+
+most_popular_among_friends('JofreRocabert')
+
+#Two degrees of separation: For the following two questions, limit your search of followers and friends to laymen and experts.
+####Among the followers of your target and their followers, who is the most active?
+####Among the friends of your target and their friends, who is the most active?
+
+
+#Get some of her information
+batman.id
+batman.name
+batman.screen_name
+batman.location
+
+#Check her tweets
+batman.status
+batman.status.text
+batman.statuses_count
+
+#Check her followers
+batman.followers_count
+batman.followers() #creates a list of user objects - only the first 20!
+api.followers(batman.id,count=200) #creates a list of user objects - can get up to 200
