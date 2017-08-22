@@ -7,8 +7,8 @@ import time
 #Check the documentation page
 #http://docs.tweepy.org/en/v3.2.0/
 #Get access to API
-auth = tweepy.OAuthHandler('99bJyQdvP6aHSAXtQbvXv3Ia7', 'gjen7dxOV8djaTQ6ig7Joe99coAPNbCXdzYe6AD9lWbcAnubUm')
-auth.set_access_token('930848858-XCglhrhAm7eY60n4avt72iE5pdcBc725wgWb3ELi', 'j8hF7bzn06zLR3ChudEmgR5InA3uEdOopvKtRdkTmZ2qt')    
+auth = tweepy.OAuthHandler('...', '...')
+auth.set_access_token('...', '...')    
 api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True, retry_count=3, retry_delay=60)
 
 #I create a user object of my target account that has 250 followers
@@ -164,16 +164,10 @@ sum(float(num) <= 1000 for num in followercount_followers)
 #Get followers of followers who are not celebrities
 all_followers = []
 for i in range(0, len(target_followers2)):
-    try:
-        for page in tweepy.Cursor(api.followers_ids, id=target_followers2[i]).pages():#get followers of the followers
-            all_followers.extend(page)
-            print len(all_followers)
-    except TweepError as e:
-        if 'Failed to send request:' in e.reason:
-            print "Time out error caught."
-            time.sleep(180)
-            continue
-
+    for page in tweepy.Cursor(api.followers_ids, id=target_followers2[i]).pages():#get followers of the followers
+        all_followers.extend(page)
+        print len(all_followers)
+    
 #Add followers of the target account to the followers of followers
 all_followers2 = all_followers + target_followers2
 
