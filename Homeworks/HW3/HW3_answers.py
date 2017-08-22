@@ -185,6 +185,7 @@ statusescount_allfollowers = []#get the number of statuses for each follower in 
 
 for i in range(0, len(all_followers2)-1):
     statusescount_allfollowers.append(api.get_user(all_followers2[i]).statuses_count)
+    print len(statusescount_allfollowers)
 
 print len(all_followers2)
 print len(statusescount_allfollowers)
@@ -233,23 +234,4 @@ max_index2 = all_friends2.index(max_friends)#get index of max value
 n3 = api.get_user(all_friends2[max_index2]).name#get name for the index
 n4 = api.get_user(all_friends2[max_index2]).screen_name#get name for the index
 
-print "The most active of the followers and followers of follwers of the target account is %s with %d total statuses." % (n3, max_friends)
-
-
-
-
-
-followercount_all = []#get the number of followers for each follower in the list
-
-for i in range(0, len(all_followers2)-1):
-    followercount_all.append(api.get_user(all_followers2[i]).followers_count)
-
-print len(followercount_followers)
-
-max_followers = max(followercount_all)#repeated what I did above for statuses
-max_index2 = followercount_all.index(max_followers)
-n3 = api.get_user(all_followers2[max_index2]).name
-n4 = api.get_user(all_followers2[max_index2]).screen_name
-
-print "The most popular follower of this account is %s with %d total followers." % (n3, max_followers)
-
+print "The most active of the friends and friends of friends of the target account is %s with %d total statuses." % (n3, max_friends)
