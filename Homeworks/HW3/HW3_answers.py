@@ -189,8 +189,8 @@ for i in range(0, len(all_followers2)-1):
 print len(all_followers2)
 print len(statusescount_allfollowers)
 
-max_followers = max(statusescount_allfollowers)#get max value in the list
-max_index2 = followercount_all.index(max_followers)#get index of max value
+max_statuses_follo = max(statusescount_allfollowers)#get max value in the list
+max_index2 = followercount_all.index(max_status_follo)#get index of max value
 n3 = api.get_user(all_followers2[max_index2]).name#get name for the index
 n4 = api.get_user(all_followers2[max_index2]).screen_name#get name for the index
 
@@ -233,7 +233,7 @@ max_index2 = all_friends2.index(max_friends)#get index of max value
 n3 = api.get_user(all_friends2[max_index2]).name#get name for the index
 n4 = api.get_user(all_friends2[max_index2]).screen_name#get name for the index
 
-print "The most active of the followers and followers of follwers of the target account is %s with %d total statuses." % (n3, max_followers)
+print "The most active of the followers and followers of follwers of the target account is %s with %d total statuses." % (n3, max_friends)
 
 
 
